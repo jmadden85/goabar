@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Goal bar</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bottstrap-responsive.css">
+    <link href="css/ font-awesome.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+
+    <section class="wrapper">
+
+        <section class="goalBarWrapper">
+
+            <div class="progress">
+                <div class="bar" style="width: 60%;"></div>
+            </div>
+
+            <div id="totalNum" class="tooltip top in">
+                <div class="tooltip-arrow"></div>
+                <div class="tooltip-inner">40</div>
+            </div>
+
+            <div id="goalNum" class="tooltip top in">
+                <div class="tooltip-arrow"></div>
+                <div class="tooltip-inner">40</div>
+            </div>
+
+            <input type="hidden" id="goal" value="7000">
+            <input type="hidden" id="total" value="10000">
+
+        </section>
+
+    </section>
+
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
