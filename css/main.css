@@ -11,3 +11,9 @@
 .progress {
     height:45px;
 }
+
+.tooltip {
+    position:absolute;
+    top:-40px;
+    left:-9px;
+}
