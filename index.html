@@ -11,13 +11,14 @@
 
     <section class="wrapper">
 
-        <section class="goalBarWrapper">
+        <section id="goalSetter" class="goalBarWrapper">
 
             <div class="progress">
                 <div class="bar"></div>
+                <div class="bar" style="width: 0%;"></div>
             </div>
 
-            <div id="totalNum" class="tooltip top in">
+            <!-- <div id="totalNum" class="tooltip top in">
                 <div class="tooltip-arrow"></div>
                 <div class="tooltip-inner">0</div>
             </div>
@@ -25,13 +26,17 @@
             <div id="goalNum" class="tooltip top in">
                 <div class="tooltip-arrow"></div>
                 <div class="tooltip-inner">0</div>
-            </div>
+            </div> -->
 
             <div id="dragger"></div>
 
             <input type="hidden" id="goal" value="1500">
             <input type="hidden" id="total" value="1500">
             <input type="hidden" id="curr" value="340">
+
+            <input type="hidden" id="current" value="3313">
+            <input type="hidden" id="goal" value="7000">
+            <input type="hidden" id="total" value="10000">
 
         </section>
 
