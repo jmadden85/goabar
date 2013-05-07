@@ -4,7 +4,7 @@
     <title>Goal bar</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bottstrap-responsive.css">
-    <link href="css/ font-awesome.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
@@ -14,28 +14,30 @@
         <section class="goalBarWrapper">
 
             <div class="progress">
-                <div class="bar" style="width: 60%;"></div>
+                <div class="bar"></div>
             </div>
 
             <div id="totalNum" class="tooltip top in">
                 <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner">40</div>
+                <div class="tooltip-inner">0</div>
             </div>
 
             <div id="goalNum" class="tooltip top in">
                 <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner">40</div>
+                <div class="tooltip-inner">0</div>
             </div>
 
-            <input type="hidden" id="goal" value="7000">
-            <input type="hidden" id="total" value="10000">
+            <div id="dragger"></div>
+
+            <input type="hidden" id="goal" value="1500">
+            <input type="hidden" id="total" value="1500">
+            <input type="hidden" id="curr" value="340">
 
         </section>
 
     </section>
 
-
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
 </body>

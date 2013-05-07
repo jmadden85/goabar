@@ -11,3 +11,28 @@
 .progress {
     height:45px;
 }
+
+.tooltip {
+    position:absolute;
+    top:-39px;
+    left:-9px;
+}
+
+#totalNum {
+    display:none;
+}
+
+#dragger {
+    padding:35px 25px;
+    border-radius:6px;
+    border:2px solid #f3f3f3;
+    background:#ddd;
+    opacity:.6;
+    width:0px;
+    top:-14px;
+    left:0;
+    position:absolute;
+    display:none;
+    cursor:pointer;
+    z-index:10;
+}
