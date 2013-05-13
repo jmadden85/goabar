@@ -11,32 +11,71 @@
 
     <section class="wrapper">
 
+        <section class="controls">
+
+            <label for="minBar">Minimum Bar amount</label>
+            <input type="number" id="minBar">
+
+            <label for="maxBar">Maximum Bar amount</label>
+            <input type="number" id="maxBar">
+
+            <a class="btn">Reset Bar</a>
+
+        </section>
+
         <section id="goalSetter" class="goalBarWrapper">
 
-            <div class="progress">
-                <div class="bar"></div>
-                <div class="bar" style="width: 0%;"></div>
+            <div class="barWrappers cashMoneyWrapper">
+                <div class="indicators">
+                    <span class="min"></span>
+                    <span class="mid"></span>
+                    <span class="max"></span>
+                </div>
+                <div id="cashMoneyCurrent" class="tooltip top in">
+                    <div class="tooltip-arrow"></div>
+                    <div class="tooltip-inner">0</div>
+                </div>
+                <div class="dragger">
+                    <div id="cashMoneyGoal" class="tooltip top in">
+                        <div class="tooltip-arrow"></div>
+                        <div class="tooltip-inner">0</div>
+                    </div>
+                </div>
+                <div id="cashMoney" class="progress">
+                    <div class="bar" style="width: 0%;"></div>
+                    <div class="bar goalBar"></div>
+                </div>
             </div>
 
-            <!-- <div id="totalNum" class="tooltip top in">
-                <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner">0</div>
+            <div class="barWrappers peopleWrapper">
+                <div class="indicators">
+                    <span class="min"></span>
+                    <span class="mid"></span>
+                    <span class="max"></span>
+                </div>
+                <div id="peopleCurrent" class="tooltip top in">
+                    <div class="tooltip-arrow"></div>
+                    <div class="tooltip-inner">0</div>
+                </div>
+                <div class="dragger">
+                    <div id="peopleGoal" class="tooltip top in">
+                        <div class="tooltip-arrow"></div>
+                        <div class="tooltip-inner">0</div>
+                    </div>
+                </div>
+                <div id="people" class="progress">
+                    <div class="bar" style="width: 0%;"></div>
+                    <div class="bar goalBar"></div>
+                </div>
+
             </div>
 
-            <div id="goalNum" class="tooltip top in">
-                <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner">0</div>
-            </div> -->
-
-            <div id="dragger"></div>
-
-            <input type="hidden" id="goal" value="1500">
-            <input type="hidden" id="total" value="1500">
-            <input type="hidden" id="curr" value="340">
-
-            <input type="hidden" id="current" value="3313">
-            <input type="hidden" id="goal" value="7000">
-            <input type="hidden" id="total" value="10000">
+            <input type="hidden" id="current" value="600">
+            <input type="hidden" id="currentPeople" value="6">
+            <input type="hidden" id="min" value="0">
+            <input type="hidden" id="goal" value="1800">
+            <input type="hidden" id="max" value="3600">
+            <input type="hidden" id="referAmount" value="300">
 
         </section>
 
