@@ -28,6 +28,9 @@
     width:100%;
     position:absolute;
     top:0;
+    font-weight:bold;
+    font-size:16px;
+    color:#989898;
 }
 
 .indicators .mid {
