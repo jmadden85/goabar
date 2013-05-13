@@ -42,6 +42,7 @@ var shareWrap = function ($) {
             $(moneyBar[0]).css('width', completePercentage + '%');
             $(peopleBar[0]).css('width', completePercentage + '%');
             $('.goalBar').css('width', (goalPercentage * 100) - completePercentage + '%');
+            $('.goalBar').addClass('loaded');
 
             //Load goal marker
             dragger.css({
@@ -93,6 +94,7 @@ var shareWrap = function ($) {
                     'left' : barWrappers.width() * (thisGoal / maxRefer) - 17 + 'px',
                     'display' : 'block'
                 });
+                $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 17) / barWrappers.width() * 100) - completePercentage + '%');
                 return false;
             }
 
@@ -129,6 +131,7 @@ var shareWrap = function ($) {
         var setter = $('a.btn');
         var barWidth = bars.width();
         var goalMidPoints = [];
+        var percentage = parseInt(current, 10) / parseInt(max, 10) * 100;
 
         setter.click(function () {
 
@@ -144,8 +147,6 @@ var shareWrap = function ($) {
             var thisSpace = spaceBetweenGoals * i;
             goalMidPoints.push(Math.round(startingSpace + thisSpace));
         }
-
-        console.log(goalMidPoints);
 
         dragger.on('mousedown mouseup mousemove', function (event) {
             var eventType = event.type;
@@ -201,7 +202,7 @@ var shareWrap = function ($) {
 
                     dragger.css('left', mouseX + 'px');
                     console.log(parseInt(dragger.css('left').split('px')[0], 10) + ', ' + $($('.bar')[0]).width() + ', ' + barWidth);
-                    $('.goalBar').css('width', (parseInt(dragger.css('left').split('px')[0], 10) / barWidth * 100) - $($('.bar')[0]).width() / barWidth * 100 + '%');
+                    $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 17) / barWidth * 100) - percentage + '%');
                 }
                 break;
 

@@ -103,3 +103,10 @@
     -o-background-size: 40px 40px;
     background-size: 40px 40px;
 }
+
+.progress .loaded {
+    -webkit-transition: width 0s ease;
+     -moz-transition: width 0s ease;
+       -o-transition: width 0s ease;
+          transition: width 0s ease;
+}
