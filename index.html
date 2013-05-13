@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Goal bar</title>
+    <meta name="viewport" content="width = 480, user-scalable = no">
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bottstrap-responsive.css">
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -18,6 +19,8 @@
 
             <label for="maxBar">Maximum Bar amount</label>
             <input type="number" id="maxBar">
+
+            <div id="goalNow"></div>
 
             <a class="btn">Reset Bar</a>
 
@@ -70,12 +73,12 @@
 
             </div>
 
-            <input type="hidden" id="current" value="3200">
+            <input type="hidden" id="current" value="1200">
             <input type="hidden" id="currentPeople" value="8">
-            <input type="hidden" id="min" value="2400">
-            <input type="hidden" id="goal" value="4000">
-            <input type="hidden" id="max" value="12000">
-            <input type="hidden" id="referAmount" value="400">
+            <input type="hidden" id="min" value="0">
+            <input type="hidden" id="goal" value="3300">
+            <input type="hidden" id="max" value="3600">
+            <input type="hidden" id="referAmount" value="300">
 
         </section>
 
@@ -83,6 +86,8 @@
 
     <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/hammer.min.js"></script>
+    <script src="js/jquery.hammer.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

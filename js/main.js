@@ -46,13 +46,13 @@ var shareWrap = function ($) {
 
             //Load goal marker
             dragger.css({
-                'left' : barWrappers.width() * goalPercentage - 17 + 'px',
+                'left' : barWrappers.width() * goalPercentage - 22 + 'px',
                 'display' : 'block'
             });
 
             //Load the tooltips
-            cashTooltip.children('.tooltip-inner').html(currentNum);
-            cashGoalTooltip.children('.tooltip-inner').html(goalNum);
+            cashTooltip.children('.tooltip-inner').html('$' + currentNum);
+            cashGoalTooltip.children('.tooltip-inner').html('$' + goalNum);
             peopleTooltip.children('.tooltip-inner').html(currentRefer);
             peopleGoalTooltip.children('.tooltip-inner').html(goalNum / referAmountNum);
 
@@ -62,7 +62,7 @@ var shareWrap = function ($) {
                     'display' : 'block'
                 });
                 cashGoalTooltip.css({
-                    'left' : -(cashGoalTooltip.width() / 2) + 17 + 'px',
+                    'left' : -(cashGoalTooltip.width() / 2) + 22 + 'px',
                     'display' : 'block'
                 });
                 peopleTooltip.css({
@@ -70,7 +70,7 @@ var shareWrap = function ($) {
                     'display' : 'block'
                 });
                 peopleGoalTooltip.css({
-                    'left' : -(peopleGoalTooltip.width() / 2) + 17 + 'px',
+                    'left' : -(peopleGoalTooltip.width() / 2) + 22 + 'px',
                     'display' : 'block'
                 });
             }, 600);
@@ -91,24 +91,24 @@ var shareWrap = function ($) {
 
             if ( !isAdjusting ) {
                 dragger.css({
-                    'left' : barWrappers.width() * (thisGoal / maxRefer) - 17 + 'px',
+                    'left' : barWrappers.width() * (thisGoal / maxRefer) - 22 + 'px',
                     'display' : 'block'
                 });
-                $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 17) / barWrappers.width() * 100) - completePercentage + '%');
+                $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWrappers.width() * 100) - completePercentage + '%');
                 return false;
             }
 
             dragger.attr('data-goal', theNum);
-            cashGoalTooltip.children('.tooltip-inner').html(theNum * referAmountNum);
+            cashGoalTooltip.children('.tooltip-inner').html('$' + theNum * referAmountNum);
             peopleGoalTooltip.children('.tooltip-inner').html(theNum);
 
             peopleGoalTooltip.css({
-                'left' : -(peopleGoalTooltip.width() / 2) + 17 + 'px',
+                'left' : -(peopleGoalTooltip.width() / 2) + 22 + 'px',
                 'display' : 'block'
             });
 
             cashGoalTooltip.css({
-                'left' : -(cashGoalTooltip.width() / 2) + 17 + 'px',
+                'left' : -(cashGoalTooltip.width() / 2) + 22 + 'px',
                 'display' : 'block'
             });
 
@@ -122,6 +122,7 @@ var shareWrap = function ($) {
         var min = $('#min').val();
         var max = $('#max').val();
         var referAmount = $('#referAmount').val();
+        var currentReferrals = parseInt(current, 10) / parseInt(referAmount, 10);
         var goalSet = new GoalSlider(min, max, goal, current, referAmount);
         var dragger = $('.dragger');
         var dragging = false;
@@ -132,6 +133,7 @@ var shareWrap = function ($) {
         var barWidth = bars.width();
         var goalMidPoints = [];
         var percentage = parseInt(current, 10) / parseInt(max, 10) * 100;
+        var isTouch = 'ontouchstart' in document.documentElement;
 
         setter.click(function () {
 
@@ -172,47 +174,90 @@ var shareWrap = function ($) {
 
         });
 
+        if ( isTouch ) {
+            dragger.hammer().on('touch release drag', function (event) {
+                event.preventDefault();
+                event.gesture.preventDefault();
+                var eventType = event.type;
+                var dragPosition = event.gesture.center.pageX - bars.offset().left - 22;
+
+                switch (eventType) {
+
+                case 'touch' :
+                    dragging = true;
+                    break;
+
+                case 'release' :
+                    dragging = false;
+                    goalSet.slideChange(false);
+                    break;
+
+                case 'drag' :
+                    if ( dragging && dragPosition > -22 && dragPosition < (barWidth) ) {
+                        var goalNow = dragger.attr('data-goal');
+
+                        //Increment while changing
+                        if ( dragPosition < goalMidPoints[goalNow - 2] && goalNow - 1 !== currentReferrals ) {
+                            goalSet.slideChange(true, goalNow - 1);
+                        } else if ( dragPosition > goalMidPoints[goalNow - 1] ) {
+                            goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
+                        }
+
+                        $('#goalNow').html(dragPosition);
+
+                        dragger.css('left', dragPosition + 'px');
+                        $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - percentage + '%');
+                    }
+                    break;
+
+                default :
+                    break;
+                }
+            });
+        }
+
         $(document).on('mouseup', function () {
             dragging = false;
         });
 
-        bars.on('mouseup mousemove', function (event) {
-            var eventType = event.type;
-            event.preventDefault();
+        if ( !isTouch ) {
+            bars.on('mouseup mousemove', function (event) {
+                var eventType = event.type;
+                event.preventDefault();
 
-            switch (eventType) {
+                switch (eventType) {
 
-            case 'mouseup' :
-                dragging = false;
-                goalSet.slideChange(false);
-                break;
+                case 'mouseup' :
+                    dragging = false;
+                    goalSet.slideChange(false);
+                    break;
 
-            case 'mousemove' :
-                var mouseX = (event.pageX - bars.offset().left) - 17;
-                var mouseY = event.offsetY;
-                var goalNow = dragger.attr('data-goal');
-                if ( dragging && mouseX > -17 && mouseX < (barWidth - 17) ) {
+                case 'mousemove' :
+                    var mouseX = (event.pageX - bars.offset().left) - 22;
+                    var mouseY = event.offsetY;
+                    var goalNow = dragger.attr('data-goal');
+                    if ( dragging && mouseX > -22 && mouseX < (barWidth - 22) ) {
 
-                    //Increment while changing
-                    if ( mouseX < goalMidPoints[goalNow - 2] ) {
-                        goalSet.slideChange(true, goalNow - 1);
-                    } else if ( mouseX > goalMidPoints[goalNow - 1] ) {
-                        goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
+                        //Increment while changing
+                        if ( mouseX < goalMidPoints[goalNow - 2] && goalNow - 1 !== currentReferrals ) {
+                            goalSet.slideChange(true, goalNow - 1);
+                        } else if ( mouseX > goalMidPoints[goalNow - 1] ) {
+                            goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
+                        }
+
+                        dragger.css('left', mouseX + 'px');
+                        $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - percentage + '%');
                     }
+                    break;
 
-                    dragger.css('left', mouseX + 'px');
-                    console.log(parseInt(dragger.css('left').split('px')[0], 10) + ', ' + $($('.bar')[0]).width() + ', ' + barWidth);
-                    $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 17) / barWidth * 100) - percentage + '%');
+                default :
+                    break;
+
                 }
-                break;
-
-            default :
-                break;
-
-            }
 
 
-        });
+            });
+        }
 
     }, false);
 
