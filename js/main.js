@@ -6,6 +6,8 @@ var shareWrap = function ($) {
         this.goal = goal;
         this.current = current;
         this.referAmount = referAmount;
+
+        //Store all the elemenets that will be effected in variables
         var moneyIndicators = $('.cashMoneyWrapper .indicators span');
         var peopleIndicators = $('.peopleWrapper .indicators span');
         var barWrappers = $('.barWrappers');
@@ -17,13 +19,26 @@ var shareWrap = function ($) {
         var peopleTooltip = $('#peopleCurrent');
         var peopleGoalTooltip = $('#peopleGoal');
 
+        //Turn everything into integers for maths
+        //Generate percentages
         var minNum = parseInt(this.min, 10);
         var maxNum = parseInt(this.max, 10);
+        var diff = maxNum - minNum;
         var goalNum = parseInt(this.goal, 10);
+        var goalDiff = goalNum - minNum;
         var currentNum = parseInt(this.current, 10);
+        var currDiff = currentNum - minNum
         var referAmountNum = parseInt(this.referAmount, 10);
-        var completePercentage = 100 * (currentNum / maxNum);
-        var goalPercentage = goalNum / maxNum;
+        var completePercentage;
+        var goalPercentage;
+        //If the minimum amount isn't 0 then the math needs to change some
+        if ( minNum ) {
+            completePercentage = 100 * (currDiff / diff);
+            goalPercentage = goalDiff / diff;
+        } else {
+            completePercentage = 100 * (currentNum / maxNum);
+            goalPercentage = goalNum / maxNum;
+        }
         var indicators = [minNum, maxNum / 2, maxNum];
         var minRefer = minNum / referAmountNum;
         var maxRefer = maxNum / referAmountNum;
@@ -76,7 +91,7 @@ var shareWrap = function ($) {
             }, 600);
 
             //Set points for goal marker to snap to
-            dragger.attr('data-points', maxRefer);
+            dragger.attr('data-points', maxRefer - minRefer);
             dragger.attr('data-goal', goalNum / referAmountNum);
 
 
@@ -91,7 +106,7 @@ var shareWrap = function ($) {
 
             if ( !isAdjusting ) {
                 dragger.css({
-                    'left' : barWrappers.width() * (thisGoal / maxRefer) - 22 + 'px',
+                    'left' : barWrappers.width() * ((parseInt(thisGoal, 10) - minRefer) / (maxRefer - minRefer)) - 22 + 'px',
                     'display' : 'block'
                 });
                 $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWrappers.width() * 100) - completePercentage + '%');
@@ -135,10 +150,6 @@ var shareWrap = function ($) {
         var percentage = parseInt(current, 10) / parseInt(max, 10) * 100;
         var isTouch = 'ontouchstart' in document.documentElement;
 
-        setter.click(function () {
-
-        });
-
         goalSet.init();
 
         var dragPoints = parseInt(dragger.attr('data-points'), 10);
@@ -170,51 +181,49 @@ var shareWrap = function ($) {
                 break;
 
             }
-
-
         });
 
-        if ( isTouch ) {
-            dragger.hammer().on('touch release drag', function (event) {
-                event.preventDefault();
-                event.gesture.preventDefault();
-                var eventType = event.type;
-                var dragPosition = event.gesture.center.pageX - bars.offset().left - 22;
+        // if ( !isTouch ) {
+        //     dragger.hammer().on('touch release drag', function (event) {
+        //         event.preventDefault();
+        //         event.gesture.preventDefault();
+        //         var eventType = event.type;
+        //         var dragPosition = event.gesture.center.pageX - bars.offset().left - 22;
 
-                switch (eventType) {
+        //         switch (eventType) {
 
-                case 'touch' :
-                    dragging = true;
-                    break;
+        //         case 'touch' :
+        //             dragging = true;
+        //             break;
 
-                case 'release' :
-                    dragging = false;
-                    goalSet.slideChange(false);
-                    break;
+        //         case 'release' :
+        //             dragging = false;
+        //             goalSet.slideChange(false);
+        //             break;
 
-                case 'drag' :
-                    if ( dragging && dragPosition > -22 && dragPosition < (barWidth) ) {
-                        var goalNow = dragger.attr('data-goal');
+        //         case 'drag' :
+        //             if ( dragging && dragPosition > -22 && dragPosition < (barWidth) ) {
+        //                 var goalNow = dragger.attr('data-goal');
 
-                        //Increment while changing
-                        if ( dragPosition < goalMidPoints[goalNow - 2] && goalNow - 1 !== currentReferrals ) {
-                            goalSet.slideChange(true, goalNow - 1);
-                        } else if ( dragPosition > goalMidPoints[goalNow - 1] ) {
-                            goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
-                        }
+        //                 //Increment while changing
+        //                 if ( dragPosition < goalMidPoints[goalNow - 2] && goalNow - 1 !== currentReferrals ) {
+        //                     goalSet.slideChange(true, goalNow - 1);
+        //                 } else if ( dragPosition > goalMidPoints[goalNow - 1] ) {
+        //                     goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
+        //                 }
 
-                        $('#goalNow').html(dragPosition);
+        //                 $('#goalNow').html(dragPosition);
 
-                        dragger.css('left', dragPosition + 'px');
-                        $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - percentage + '%');
-                    }
-                    break;
+        //                 dragger.css('left', dragPosition + 'px');
+        //                 $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - percentage + '%');
+        //             }
+        //             break;
 
-                default :
-                    break;
-                }
-            });
-        }
+        //         default :
+        //             break;
+        //         }
+        //     });
+        // }
 
         $(document).on('mouseup', function () {
             dragging = false;
@@ -239,9 +248,9 @@ var shareWrap = function ($) {
                     if ( dragging && mouseX > -22 && mouseX < (barWidth - 22) ) {
 
                         //Increment while changing
-                        if ( mouseX < goalMidPoints[goalNow - 2] && goalNow - 1 !== currentReferrals ) {
+                        if ( mouseX < goalMidPoints[(goalNow - min / referAmount) - 2] && goalNow - 1 !== currentReferrals ) {
                             goalSet.slideChange(true, goalNow - 1);
-                        } else if ( mouseX > goalMidPoints[goalNow - 1] ) {
+                        } else if ( mouseX > goalMidPoints[(goalNow - min / referAmount) - 1] ) {
                             goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
                         }
 
