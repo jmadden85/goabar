@@ -12,8 +12,8 @@ var barWrap = function ($) {
         var maxNum = parseInt(this.max, 10);
         var goalNum = parseInt(this.goal, 10);
         var currentNum = parseInt(this.current, 10);
-        var completedPercentage = currentNum / (maxNum - minNum);
-        var goalPercentage = goalNum / (maxNum - minNum);
+        var completedPercentage = (currentNum - minNum) / (maxNum - minNum);
+        var goalPercentage = (goalNum - minNum) / (maxNum - minNum);
 
         //Grab elements to be effected
         var indicator = $('.peopleWrapper .indicators span');
@@ -44,6 +44,7 @@ var barWrap = function ($) {
                 });
                 $(bar[1]).css('width', (goalPercentage - completedPercentage) * 100 + '%');
                 setTimeout(function () {
+                    $(bar[1]).addClass('loaded');
                     goalTooltip.css({
                         'left' : -(goalTooltip.width() / 2) + 22 + 'px',
                         'display' : 'block'
@@ -101,6 +102,8 @@ var barWrap = function ($) {
         var dragger = $('.dragger');
         var bars = $('.barWrappers');
         var barWidth = bars.width();
+        var firstBarPercentage = ((current - min) / (max - min)) * 100;
+        var goalIncrements = 1;
 
         //Create the object
         var goalBar = new GoalSlider(level, min, max, goal, current);
@@ -110,12 +113,18 @@ var barWrap = function ($) {
         //Create a variable with the goal break points
         var goalBreakPoints = [];
         var dragPoints = parseInt(dragger.attr('data-points'), 10);
+        //Check ambassadors level for incremented break points
+        if ( level === 1 ) {
+            dragPoints = dragPoints / 2;
+            goalIncrements = 2;
+        }
         var spaceBetweenGoals = barWidth / dragPoints;
         for ( var i = 0; i < (dragPoints - 1); i++ ) {
             var startingSpace = spaceBetweenGoals * 1.5;
             var thisSpace = spaceBetweenGoals * i;
             goalBreakPoints.push(Math.round(startingSpace + thisSpace));
         }
+        console.log(goalBreakPoints);
 
         //Set up some dragging events
         dragger.on('mousedown mouseup mousemove', function (event) {
@@ -160,15 +169,16 @@ var barWrap = function ($) {
 
                 if ( dragging && mouseX > -22 && mouseX < (barWidth - 22) ) {
 
+                    console.log(mouseX);
                     //Increment while changing
-                    if ( mouseX < goalBreakPoints[(goalNow - min / referAmount) - 2] && goalNow - 1 !== current ) {
-                        goalSet.slideChange(true, goalNow - 1);
-                    } else if ( mouseX > goalBreakPoints[(goalNow - min / referAmount) - 1] ) {
-                        goalSet.slideChange(true, parseInt(goalNow, 10) + 1);
+                    if ( mouseX < goalBreakPoints[((goalNow / goalIncrements) - min) - 2] && goalNow - goalIncrements >= current ) {
+                        goalBar.slideChange(true, goalNow - goalIncrements);
+                    } else if ( mouseX > goalBreakPoints[((goalNow / goalIncrements) - min) - 1] ) {
+                        goalBar.slideChange(true, parseInt(goalNow, 10) + goalIncrements);
                     }
 
                     dragger.css('left', mouseX + 'px');
-                    $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - percentage + '%');
+                    $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - firstBarPercentage + '%');
                 }
 
                 break;
