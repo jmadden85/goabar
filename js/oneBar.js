@@ -119,7 +119,7 @@ var barWrap = function ($) {
             goalIncrements = 2;
         }
         var spaceBetweenGoals = barWidth / dragPoints;
-        for ( var i = 0; i < (dragPoints - 1); i++ ) {
+        for ( var i = 0; i < dragPoints; i++ ) {
             var startingSpace = spaceBetweenGoals * 1.5;
             var thisSpace = spaceBetweenGoals * i;
             goalBreakPoints.push(Math.round(startingSpace + thisSpace));
@@ -169,7 +169,7 @@ var barWrap = function ($) {
 
                 if ( dragging && mouseX > -22 && mouseX < (barWidth - 22) ) {
 
-                    console.log(mouseX);
+                    console.log(mouseX, goalBreakPoints[(goalNow / goalIncrements) - min]);
                     //Increment while changing
                     if ( mouseX < goalBreakPoints[((goalNow / goalIncrements) - min) - 2] && goalNow - goalIncrements >= current ) {
                         goalBar.slideChange(true, goalNow - goalIncrements);
