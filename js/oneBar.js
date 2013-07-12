@@ -1,19 +1,17 @@
 var barWrap = function ($) {
 
-    var GoalSlider = function (ambassadorLevel, min, max, goal, current) {
-        this.ambassadorLevel = ambassadorLevel;
-        this.min = min;
-        this.max = max;
+    var GoalSlider = function (goal, current) {
         this.goal = goal;
         this.current = current;
 
         //Conver values to integers for maths
-        var minNum = parseInt(this.min, 10);
-        var maxNum = parseInt(this.max, 10);
+        var minNum = 0;
+        var maxNum = 0;
         var goalNum = parseInt(this.goal, 10);
         var currentNum = parseInt(this.current, 10);
-        var completedPercentage = (currentNum - minNum) / (maxNum - minNum);
-        var goalPercentage = (goalNum - minNum) / (maxNum - minNum);
+        var completedPercentage = 0;
+        var goalPercentage = 0;
+        var level = 0;
 
         //Grab elements to be effected
         var indicator = $('.peopleWrapper .indicators span');
@@ -22,9 +20,35 @@ var barWrap = function ($) {
         var dragger = $('.dragger');
         var tooltip = $('#peopleCurrent');
         var goalTooltip = $('#peopleGoal');
-        var indicators = [minNum, ((maxNum - minNum) / 2) + minNum, maxNum]
+        var indicators = [];
 
         this.init = function () {
+            //Figure out the ambassador level and set the appropriate min and max
+            if ( currentNum < 6 ) {
+                maxNum = 6;
+                minNum = 0;
+            } else if ( currentNum > 6 && currentNum < 20 ) {
+                maxNum = 20;
+                minNum = 4;
+                level = 1;
+            } else if ( currentNum > 20 && currentNum < 50 ) {
+                maxNum = 50;
+                minNum = 15;
+                level = 2;
+            } else {
+                maxNum = currentNum + 20;
+                minNum = currentNum - 20;
+                level = 3;
+            }
+
+            //Calculate percentages
+            completedPercentage = (currentNum - minNum) / (maxNum - minNum);
+            goalPercentage = (goalNum - minNum) / (maxNum - minNum);
+            indicators = [minNum, Math.round(((maxNum - minNum) / 2)) + minNum, maxNum];
+
+            //Set some hidden inputs
+            $('#level').val(level);
+
             //Set indicators
             for ( var i = 0; i < indicators.length; i++ ) {
                 $(indicator[i]).html(indicators[i]);
@@ -95,20 +119,20 @@ var barWrap = function ($) {
         //Grab all the hidden input data
         var current = parseInt($('#current').val(), 10);
         var goal = parseInt($('#goal').val(), 10);
-        var min = parseInt($('#min').val(), 10);
-        var max = parseInt($('#max').val(), 10);
-        var level = parseInt($('#level').val(), 10);
         var dragging = false;
         var dragger = $('.dragger');
         var bars = $('.barWrappers');
         var barWidth = bars.width();
-        var firstBarPercentage = ((current - min) / (max - min)) * 100;
         var goalIncrements = 1;
 
         //Create the object
-        var goalBar = new GoalSlider(level, min, max, goal, current);
+        var goalBar = new GoalSlider(goal, current);
 
         goalBar.init();
+        var min = parseInt($('.min').html(), 10);
+        var max = parseInt($('.max').html(), 10);
+        var level = parseInt($('#level').val(), 10);
+        var firstBarPercentage = ((current - min) / (max - min)) * 100;
 
         //Create a variable with the goal break points
         var goalBreakPoints = [];
@@ -171,9 +195,9 @@ var barWrap = function ($) {
 
                     console.log(mouseX, goalBreakPoints[(goalNow / goalIncrements) - min]);
                     //Increment while changing
-                    if ( mouseX < goalBreakPoints[((goalNow / goalIncrements) - min) - 2] && goalNow - goalIncrements >= current ) {
+                    if ( mouseX < goalBreakPoints[(goalNow - min) / goalIncrements - 2] && goalNow - goalIncrements >= current ) {
                         goalBar.slideChange(true, goalNow - goalIncrements);
-                    } else if ( mouseX > goalBreakPoints[((goalNow / goalIncrements) - min) - 1] ) {
+                    } else if ( mouseX > goalBreakPoints[(goalNow - min) / goalIncrements - 1] ) {
                         goalBar.slideChange(true, parseInt(goalNow, 10) + goalIncrements);
                     }
 
