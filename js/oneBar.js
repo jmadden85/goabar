@@ -106,7 +106,7 @@ var barWrap = function ($) {
                     'left' : barWrappers.width() * ((parseInt(thisGoal, 10) - minNum) / (maxNum - minNum)) - dragContainer.width() / 2 + 'px',
                     'display' : 'block'
                 });
-                $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWrappers.width() * 100) - (completedPercentage * 100) + '%');
+                $('.goalBar').css('width', ((parseInt(dragContainer.css('left').split('px')[0], 10) + dragContainer.width() / 2) / barWrappers.width() * 100) - (completedPercentage * 100) + '%');
                 return false;
             }
 
@@ -215,7 +215,7 @@ var barWrap = function ($) {
 
                     console.log(mouseX, mouseX - dragContainer.width() / 2)
                     dragContainer.css('left', mouseX + 'px');
-                    $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - firstBarPercentage + '%');
+                    $('.goalBar').css('width', ((parseInt(dragContainer.css('left').split('px')[0], 10) + dragContainer.width() / 2) / barWidth * 100) - firstBarPercentage + '%');
                 }
 
                 break;
