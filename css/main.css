@@ -52,7 +52,8 @@ body {
     width:44px;
     position:absolute;
     cursor:pointer;
-    top:22px;
+    top:92px;
+    left:10px;
     z-index:9999;
     display:none;
 }
@@ -65,24 +66,38 @@ body {
     display:none;
 }
 
-.tipContainer .tooltip {
-    top:55px;
+.dragContainer .tooltip {
+    top:33px;
+    left:14px;
 }
 
-.tipContainer {
+.dragContainer {
     position:absolute;
-    top:-90px;
+    top:-65px;
     border-radius:4px;
-    background:#dbdada;
-    width:62px;
+    padding:0 29px;
     height:95px;
-    left:-9px;
+}
+
+.innerDrag {
+    width:64px;
+    background:#dbdada;
+    border-radius:4px;
+    height:95px;
+}
+
+.dragContainer .btn {
+    margin:2px;
 }
 
 .tooltip .tooltip-inner {
     font-weight:bold;
     font-size:16px;
     padding:3px 10px;
+}
+
+.tooltip .tooltip-inner span {
+    display:block;
 }
 
 #cashMoneyGoal .tooltip-inner, #peopleGoal .tooltip-inner {

@@ -20,6 +20,8 @@ var barWrap = function ($) {
         var dragger = $('.dragger');
         var tooltip = $('#peopleCurrent');
         var goalTooltip = $('#peopleGoal');
+        var goalNumber = $('#peopleGoal .tooltip-inner span');
+        var dragContainer = $('.dragContainer');
         var indicators = [];
 
         this.init = function () {
@@ -27,11 +29,11 @@ var barWrap = function ($) {
             if ( currentNum < 6 ) {
                 maxNum = 6;
                 minNum = 0;
-            } else if ( currentNum > 6 && currentNum < 20 ) {
+            } else if ( currentNum >= 6 && currentNum < 20 ) {
                 maxNum = 20;
                 minNum = 4;
                 level = 1;
-            } else if ( currentNum > 20 && currentNum < 50 ) {
+            } else if ( currentNum >= 20 && currentNum < 50 ) {
                 maxNum = 50;
                 minNum = 15;
                 level = 2;
@@ -56,7 +58,7 @@ var barWrap = function ($) {
 
             //Set up the tooltips
             tooltip.children('.tooltip-inner').html(currentNum);
-            goalTooltip.children('.tooltip-inner').html(goalNum);
+            goalNumber.html(goalNum);
 
             //Load lead bar and progress bar
             $(bar[0]).css('width', completedPercentage * 100 + '%');
@@ -70,15 +72,18 @@ var barWrap = function ($) {
                 setTimeout(function () {
                     $(bar[1]).addClass('loaded');
                     goalTooltip.css({
-                        'left' : -(goalTooltip.width() / 2) + 22 + 'px',
+                        'left' : dragContainer.width() / 2 - goalTooltip.width() / 2 + 'px',
                         'display' : 'block'
                     });
                 }, 600);
             }, 600);
 
             //Position the dragger
+            dragContainer.css({
+                'left' : barWrappers.width() * goalPercentage - dragContainer.width() / 2 + 'px'
+            });
             dragger.css({
-                'left' : barWrappers.width() * goalPercentage - 22 + 'px',
+            //     'left' : barWrappers.width() * goalPercentage - 22 + 'px',
                 'display' : 'block'
             });
 
@@ -150,7 +155,12 @@ var barWrap = function ($) {
             var thisSpace = spaceBetweenGoals * i;
             goalBreakPoints.push(Math.round(startingSpace + thisSpace));
         }
-        console.log(goalBreakPoints);
+
+
+        $('#setIt').click(function () {
+            var that = this;
+            that.hide();
+        });
 
         //Set up some dragging events
         dragger.on('mousedown mouseup mousemove', function (event) {
