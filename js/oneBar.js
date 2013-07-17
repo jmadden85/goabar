@@ -102,8 +102,8 @@ var barWrap = function ($) {
             var thisGoal = dragger.attr('data-goal');
 
             if ( !isAdjusting ) {
-                dragger.css({
-                    'left' : barWrappers.width() * ((parseInt(thisGoal, 10) - minNum) / (maxNum - minNum)) - 22 + 'px',
+                dragContainer.css({
+                    'left' : barWrappers.width() * ((parseInt(thisGoal, 10) - minNum) / (maxNum - minNum)) - dragContainer.width() / 2 + 'px',
                     'display' : 'block'
                 });
                 $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWrappers.width() * 100) - (completedPercentage * 100) + '%');
@@ -111,12 +111,12 @@ var barWrap = function ($) {
             }
 
             dragger.attr('data-goal', theNum);
-            goalTooltip.children('.tooltip-inner').html(theNum);
+            goalNumber.html(theNum);
 
-            goalTooltip.css({
-                'left' : -(goalTooltip.width() / 2) + 22 + 'px',
-                'display' : 'block'
-            });
+            // goalTooltip.css({
+            //     'left' : -(goalTooltip.width() / 2) + 22 + 'px',
+            //     'display' : 'block'
+            // });
         };
     };
 
@@ -129,6 +129,7 @@ var barWrap = function ($) {
         var bars = $('.barWrappers');
         var barWidth = bars.width();
         var goalIncrements = 1;
+        var dragContainer = $('.dragContainer');
 
         //Create the object
         var goalBar = new GoalSlider(goal, current);
@@ -158,8 +159,8 @@ var barWrap = function ($) {
 
 
         $('#setIt').click(function () {
-            var that = this;
-            that.hide();
+            // var that = this;
+            // that.hide();
         });
 
         //Set up some dragging events
@@ -188,7 +189,7 @@ var barWrap = function ($) {
             goalBar.slideChange(dragging);
         });
 
-        //Set up draggin for bars
+        //Set up dragging for bars
         bars.on('mouseup mousemove', function (event) {
             var eventType = event.type;
             event.preventDefault();
@@ -200,12 +201,11 @@ var barWrap = function ($) {
                 break;
 
             case 'mousemove' :
-                var mouseX = (event.pageX - bars.offset().left) - 22;
+                var mouseX = (event.pageX - bars.offset().left) - dragContainer.width() / 2;
                 var goalNow = parseInt(dragger.attr('data-goal'), 10);
 
                 if ( dragging && mouseX > -22 && mouseX < (barWidth - 22) ) {
 
-                    console.log(mouseX, goalBreakPoints[(goalNow / goalIncrements) - min]);
                     //Increment while changing
                     if ( mouseX < goalBreakPoints[(goalNow - min) / goalIncrements - 2] && goalNow - goalIncrements > current ) {
                         goalBar.slideChange(true, goalNow - goalIncrements);
@@ -213,7 +213,8 @@ var barWrap = function ($) {
                         goalBar.slideChange(true, parseInt(goalNow, 10) + goalIncrements);
                     }
 
-                    dragger.css('left', mouseX + 'px');
+                    console.log(mouseX, mouseX - dragContainer.width() / 2)
+                    dragContainer.css('left', mouseX + 'px');
                     $('.goalBar').css('width', ((parseInt(dragger.css('left').split('px')[0], 10) + 22) / barWidth * 100) - firstBarPercentage + '%');
                 }
 

@@ -53,7 +53,7 @@ body {
     position:absolute;
     cursor:pointer;
     top:92px;
-    left:10px;
+    left:39px;
     z-index:9999;
     display:none;
 }
@@ -75,12 +75,13 @@ body {
     position:absolute;
     top:-65px;
     border-radius:4px;
-    padding:0 29px;
+    width:122px;
     height:95px;
 }
 
 .innerDrag {
     width:64px;
+    margin:0 auto;
     background:#dbdada;
     border-radius:4px;
     height:95px;
