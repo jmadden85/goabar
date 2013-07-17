@@ -19,7 +19,7 @@ body {
 }
 
 .progress {
-    height:22px;
+    height:14px;
 }
 
 .barWrappers {
@@ -52,7 +52,7 @@ body {
     width:44px;
     position:absolute;
     cursor:pointer;
-    top:7px;
+    top:22px;
     z-index:9999;
     display:none;
 }
@@ -65,8 +65,18 @@ body {
     display:none;
 }
 
-.dragger .tooltip {
-    top:-22px;
+.tipContainer .tooltip {
+    top:55px;
+}
+
+.tipContainer {
+    position:absolute;
+    top:-90px;
+    border-radius:4px;
+    background:#dbdada;
+    width:62px;
+    height:95px;
+    left:-9px;
 }
 
 .tooltip .tooltip-inner {

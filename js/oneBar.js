@@ -139,9 +139,11 @@ var barWrap = function ($) {
         var dragPoints = parseInt(dragger.attr('data-points'), 10);
         //Check ambassadors level for incremented break points
         if ( level === 1 ) {
-            dragPoints = dragPoints / 2;
             goalIncrements = 2;
+        } else if ( level === 2 ) {
+            goalIncrements = 5;
         }
+        dragPoints = dragPoints / goalIncrements;
         var spaceBetweenGoals = barWidth / dragPoints;
         for ( var i = 0; i < dragPoints; i++ ) {
             var startingSpace = spaceBetweenGoals * 1.5;
@@ -195,7 +197,7 @@ var barWrap = function ($) {
 
                     console.log(mouseX, goalBreakPoints[(goalNow / goalIncrements) - min]);
                     //Increment while changing
-                    if ( mouseX < goalBreakPoints[(goalNow - min) / goalIncrements - 2] && goalNow - goalIncrements >= current ) {
+                    if ( mouseX < goalBreakPoints[(goalNow - min) / goalIncrements - 2] && goalNow - goalIncrements > current ) {
                         goalBar.slideChange(true, goalNow - goalIncrements);
                     } else if ( mouseX > goalBreakPoints[(goalNow - min) / goalIncrements - 1] ) {
                         goalBar.slideChange(true, parseInt(goalNow, 10) + goalIncrements);
