@@ -159,8 +159,8 @@ var barWrap = function ($) {
 
 
         $('#setIt').click(function () {
-            // var that = this;
-            // that.hide();
+            var that = $(this);
+            that.parent().parent().addClass('dragConfirm');
         });
 
         //Set up some dragging events

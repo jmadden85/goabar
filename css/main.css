@@ -52,7 +52,7 @@ body {
     width:44px;
     position:absolute;
     cursor:pointer;
-    top:92px;
+    top:95px;
     left:39px;
     z-index:9999;
     display:none;
@@ -67,16 +67,41 @@ body {
 }
 
 .dragContainer .tooltip {
-    top:33px;
+    top:36px;
     left:14px;
 }
 
 .dragContainer {
     position:absolute;
-    top:-65px;
+    top:-70px;
     border-radius:4px;
     width:122px;
-    height:95px;
+    height:100px;
+}
+
+.dragContainer .confirmSet {
+    display:none;
+}
+
+.confirmSet .btn {
+    width:26px;
+}
+
+#noSet {
+    margin:0 0 0 6px;
+}
+
+.dragConfirm .confirmSet {
+    display:block;
+    margin:2px 0 0 0;
+}
+
+.dragConfirm #setIt {
+    display:none;
+}
+
+.dragConfirm .innerDrag {
+    width:122px;
 }
 
 .innerDrag {
@@ -84,7 +109,7 @@ body {
     margin:0 auto;
     background:#dbdada;
     border-radius:4px;
-    height:95px;
+    height:100px;
 }
 
 .dragContainer .btn {
