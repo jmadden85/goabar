@@ -160,7 +160,12 @@ var barWrap = function ($) {
 
         $('#setIt').click(function () {
             var that = $(this);
-            that.parent().parent().addClass('dragConfirm');
+            dragContainer.addClass('dragConfirm');
+        });
+
+        $('#noSet').click(function () {
+            var that = $(this);
+            dragContainer.removeClass('dragConfirm');
         });
 
         //Set up some dragging events
